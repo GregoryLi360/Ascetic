@@ -6,7 +6,7 @@ Marked by the deliberate rejection of excesses and luxuries in favor of inner gr
 ---
 
 Ascetic was named for its simplicity in design and semi-consistent syntatic aesthetic. 
-It borrows concepts from and is heavily inspired by Swift, Haskell, Scala, Kotlin, Go, and Rust. 
+It borrows concepts from and is heavily inspired by Swift, Haskell, Scala, Kotlin, Go, Rust, and Gleam. 
 Ascetic may be ran by the standard interpreter or transpiled into C++ code. 
 
 ## Table of Contents
@@ -139,8 +139,10 @@ More *'s = higher priority
   - [ ] Capturing immutable variables**
   - [ ] Escaping*
   - [ ] Capturing mutable variables
-  - [ ] Recursive**
+  - [ ] Recursive** <!-- https://tour.gleam.run/everything/#flow-control-recursion -->
   - [ ] Mutually recursive*
+  - [ ] Tail call elimination* <!-- be aware of stack traces during TCO https://stackoverflow.com/a/32178162-->
+  - [ ] Complete conversions to iterative functions <!-- Trampoline? https://java-design-patterns.com/patterns/trampoline/#detailed-explanation-of-trampoline-pattern-with-real-world-examples -->
 - [ ] Compound types (structs)
 - [ ] Optional type*
 
@@ -152,8 +154,8 @@ More *'s = higher priority
 - [ ] Generics
 - [ ] Protocols
 
-- [ ] Modules
-- [ ] A standard library
+- [ ] Modules (gleam module system)
+- [ ] A standard library (start with transferring builtins)
   - [ ] Collections Module
   - [ ] Foreign Function Interface Module
   - [ ] Filesystem Module
@@ -167,3 +169,6 @@ More *'s = higher priority
 -->
 
 ## Code Examples
+**Note: Some language features may not appear in the code examples section**
+**For a complete overview of the language's syntax, [view the formal grammar definition here](grammar.md).**
+

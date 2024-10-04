@@ -172,3 +172,4 @@ More *'s = higher priority
 **Note: Some language features may not appear in the code examples section**
 **For a complete overview of the language's syntax, [view the formal grammar definition here](grammar.md).**
 
+See the [code examples document](examples.md) for a quick overview of language features.

@@ -157,6 +157,7 @@ More *'s = higher priority
 - [ ] Modules (gleam module system)
 - [ ] A standard library (start with transferring builtins)
   - [ ] Collections Module
+  - [ ] Arbitrary-precision arithmetic
   - [ ] Foreign Function Interface Module
   - [ ] Filesystem Module
   - [ ] Graphics Module

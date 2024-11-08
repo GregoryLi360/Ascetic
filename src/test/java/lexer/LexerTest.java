@@ -1,10 +1,9 @@
-package tests.lexer;
+package lexer;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import lexer.*;
 import lexer.sources.*;
 import lexer.tokens.*;
 
@@ -13,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-public class LexerTests {
+public class LexerTest {
     @Nested 
     class Keywords {
         @Test

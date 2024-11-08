@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 
+import com.google.gson.GsonBuilder;
+
 import lexer.Lexer;
 import lexer.sources.ArraySource;
 import lexer.sources.Source;
@@ -21,6 +23,10 @@ public class Main {
         writer.close();
     }
 
+    public static String toJson(Object obj) {
+        return new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().serializeNulls().create().toJson(obj);
+    }
+
     public static void main(String[] args) throws IOException {
         var filePath = "./src/Test.ascetic";
         String text = readFile(filePath);
@@ -30,5 +36,4 @@ public class Main {
         List<Token> tokens = lexer.tokenizeAll();
         System.out.println(tokens);
     }
-    
 }

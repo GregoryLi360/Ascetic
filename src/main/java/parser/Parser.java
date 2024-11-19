@@ -54,7 +54,7 @@ public class Parser {
             if (nextToken.is(type)) { return consume(); }
         }
         
-        throw new UnexpectedTokenException(nextToken, expectedTokenTypes,recoveryStrategy);
+        throw new UnexpectedTokenException(nextToken, expectedTokenTypes, recoveryStrategy);
     }
 
     public StatementNode parseStatement() throws UnexpectedTokenException {

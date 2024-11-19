@@ -7,6 +7,7 @@ import parser.Parser;
 import parser.ast.*;
 import parser.ast.stmts.*;
 import parser.partial_parsers.expressions.ExpressionParser;
+import parser.partial_parsers.expressions.pratt.BindingPower;
 
 public class StatementParser {
     private Parser parser;
@@ -52,7 +53,7 @@ public class StatementParser {
     public ExpressionStatement parseExpressionStatement() throws UnexpectedTokenException {
         ExpressionStatement node = new ExpressionStatement();
         node.tokenStart = parser.getIndex();
-        node.expression = expressionParser.parseExpression();
+        node.expression = expressionParser.parseExpression(BindingPower.LOWEST.ordinal());
         parser.expect(TokenType.SEMICOLON);
         node.tokenEnd = parser.getIndex();
         return node;
@@ -71,7 +72,7 @@ public class StatementParser {
 
         parser.expect(TokenType.GUARD);
 
-        var clause = expressionParser.parseConditional();
+        var clause = expressionParser.parseConditional(BindingPower.LOWEST.ordinal());
         node.clause = clause;
 
         node.body = expressionParser.parseCodeBlockExpression();
@@ -93,7 +94,7 @@ public class StatementParser {
         node.tokenStart = parser.getIndex();
         parser.expect(TokenType.RETURN);
 
-        node.returnExpression = expressionParser.parseExpression();
+        node.returnExpression = expressionParser.parseExpression(BindingPower.LOWEST.ordinal());
         parser.expect(TokenType.SEMICOLON);
 
         node.tokenEnd = parser.getIndex();
@@ -114,7 +115,7 @@ public class StatementParser {
         node.declarationType = VariableDeclaration.Type.fromToken(parser.expect(TokenType.LET));
 
         var identifier = expressionParser.parseIdentifierWithOptionalType();
-        var assignment = expressionParser.parseAssignmentExpression();
+        var assignment = expressionParser.parseAssignmentExpression(BindingPower.ASSIGNMENT.ordinal(), identifier);
         node.identifier = identifier;
         node.assignmentExpression = assignment;
 

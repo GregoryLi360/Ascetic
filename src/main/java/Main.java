@@ -4,10 +4,12 @@ import java.util.stream.*;
 
 import com.google.gson.GsonBuilder;
 
+import errors.parser.UnexpectedTokenException;
 import lexer.Lexer;
 import lexer.sources.ArraySource;
 import lexer.sources.Source;
 import lexer.tokens.Token;
+import parser.Parser;
 
 public class Main {
     public static String readFile(String filePath) throws IOException {
@@ -27,7 +29,7 @@ public class Main {
         return new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().serializeNulls().create().toJson(obj);
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, UnexpectedTokenException {
         var filePath = "./src/Test.ascetic";
         String text = readFile(filePath);
 
@@ -35,5 +37,9 @@ public class Main {
         Lexer lexer = new Lexer(source);
         List<Token> tokens = lexer.tokenizeAll();
         System.out.println(tokens);
+        
+        Parser parser = new Parser(tokens);
+        var AST = parser.build();
+        writeFile("./AST.json", toJson(AST));
     }
 }

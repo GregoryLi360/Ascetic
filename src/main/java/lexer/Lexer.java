@@ -24,6 +24,12 @@ public class Lexer {
         }};
     }
 
+    public static int trimLeft(char[] str, int cursor) {
+        int len = str.length;
+        for(; cursor < len && Character.isWhitespace(str[cursor]); cursor++) {}
+        return cursor;
+    }
+
     public static boolean isIdentifierOrKeywordStart(char c) {
         return Character.isLetter(c) || c == '_';
     }
@@ -42,6 +48,10 @@ public class Lexer {
 
     public char peek() {
         return source.peek();
+    }
+
+    public char peek(long n) {
+        return source.peek(n);
     }
 
     public char consume() {
@@ -77,7 +87,7 @@ public class Lexer {
      * @param cursorStart the index of the last consumed character
      * @return modified token
      */
-    private void tokenizeIdentifierOrKeyword(char currChar, Token token, long cursorStart) {
+    private void tokenizeIdentifierOrKeyword(char currChar, Token token, Token.Location cursorStart) {
         while (!isEOF() && isIdentifierOrKeywordContinuation(peek())) { consume(); }
         char[] tokenChars = source.copyFrom(cursorStart).getChars();
         token.type = Constants.keywords.getOrDefault(String.valueOf(tokenChars), TokenType.IDENTIFIER);
@@ -96,17 +106,16 @@ public class Lexer {
         while (!isEOF()) {
             boolean isFirstPeriod = !encounteredPeriod && peek() == '.';
             if (!Character.isDigit(peek()) && !isFirstPeriod) { return; }
-            currChar = consume();
             
             if (isFirstPeriod) {
-                if (!Character.isDigit(peek())) { 
-                    source.undo(); 
-                    return; 
-                }
+                if (!Character.isDigit(peek(2))) { return; }
 
                 encounteredPeriod = true;
                 token.type = TokenType.FLOAT_LITERAL;
+                currChar = consume();
             }
+
+            currChar = consume();
         }
     }
 

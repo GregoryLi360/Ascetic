@@ -7,9 +7,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import lexer.tokens.Token;
+
 public class ArraySource extends Source {
     private char[] source;
     private long cursor = 0;
+    private long line = 0;
+    private long column = 0;
 
     private ArraySource(char[] chars) {
         this.source = chars;
@@ -36,8 +40,8 @@ public class ArraySource extends Source {
     }
     
     @Override
-    public long getIndex() {
-        return cursor;
+    public Token.Location getIndex() {
+        return new Token.Location(line, column, cursor);
     }
 
     @Override
@@ -51,27 +55,44 @@ public class ArraySource extends Source {
         return source[Math.toIntExact(cursor)];
     }
 
+    public char peek(long n) {
+        if (cursor + n - 1 >= source.length) { return '\0'; }
+        return source[Math.toIntExact(cursor + n - 1)];
+    }
+
     @Override
     public char consume() {
         int position = Math.toIntExact(cursor);
         cursor++;
+        column++;
         return source[position];
     }
 
     @Override
-    public long skipWhitespace() {
-        for(; cursor < source.length && Character.isWhitespace(source[Math.toIntExact(cursor)]); cursor++);
-        return cursor;
+    public Token.Location skipWhitespace() {
+        for (; cursor < source.length; cursor++) {
+            char currentChar = source[Math.toIntExact(cursor)];
+            if (!Character.isWhitespace(currentChar)) { break; }
+
+            boolean isNewLine = (currentChar == '\r' || currentChar == '\n');
+            if (isNewLine) {
+                line++;
+                column = 0;
+            } else {
+                column++;
+            }
+        }
+        return new Token.Location(line, column, cursor);
     }
 
     @Override
-    public Source copyOfRange(long start, long end) {
-        return ArraySource.fromCharArray(Arrays.copyOfRange(source, Math.toIntExact(start), Math.toIntExact(end)));
+    public Source copyOfRange(Token.Location start, Token.Location end) {
+        return ArraySource.fromCharArray(Arrays.copyOfRange(source, Math.toIntExact(start.offset), Math.toIntExact(end.offset)));
     }
 
     @Override
-    public Source copyFrom(long start) {
-        return ArraySource.fromCharArray(Arrays.copyOfRange(source, Math.toIntExact(start), Math.toIntExact(cursor)));
+    public Source copyFrom(Token.Location start) {
+        return ArraySource.fromCharArray(Arrays.copyOfRange(source, Math.toIntExact(start.offset), Math.toIntExact(cursor)));
     }
 
     @Override
@@ -82,11 +103,5 @@ public class ArraySource extends Source {
     @Override
     public char[] getChars() {
         return source;
-    }
-
-    @Override
-    public char undo() {
-        cursor--;
-        return source[Math.toIntExact(cursor)];
     }
 }

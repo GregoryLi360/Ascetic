@@ -24,8 +24,8 @@ public class LexerTest {
 
                 TokenType expectedType = entry.getValue();
                 assertEquals(expectedType, token.type);
-                assertEquals(0, token.start);
-                assertEquals(keyword.length(), token.end);
+                assertEquals(0, token.start.offset);
+                assertEquals(keyword.length(), token.end.offset);
                 assertArrayEquals(keyword.toCharArray(), token.text);
             });
         }
@@ -41,8 +41,8 @@ public class LexerTest {
 
             TokenType expectedType = TokenType.COMMENT;
             assertEquals(expectedType, token.type);
-            assertEquals(0, token.start);
-            assertEquals(comment.length(), token.end);
+            assertEquals(0, token.start.offset);
+            assertEquals(comment.length(), token.end.offset);
             assertArrayEquals(comment.toCharArray(), token.text);
         }
 
@@ -54,8 +54,8 @@ public class LexerTest {
 
             TokenType expectedType = TokenType.COMMENT;
             assertEquals(expectedType, token.type);
-            assertEquals(0, token.start);
-            assertEquals(comment.length() - 1, token.end);
+            assertEquals(0, token.start.offset);
+            assertEquals(comment.length() - 1, token.end.offset);
             assertArrayEquals(comment.substring(0, comment.length() - 1).toCharArray(), token.text);
         }
 
@@ -73,8 +73,8 @@ public class LexerTest {
 
             TokenType expectedType = TokenType.COMMENT;
             assertEquals(expectedType, token.type);
-            assertEquals(0, token.start);
-            assertEquals(comment.length(), token.end);
+            assertEquals(0, token.start.offset);
+            assertEquals(comment.length(), token.end.offset);
             assertArrayEquals(comment.toCharArray(), token.text);
         }
         
@@ -104,8 +104,8 @@ public class LexerTest {
 
             TokenType expectedType = TokenType.STRING_LITERAL;
             assertEquals(expectedType, token.type);
-            assertEquals(0, token.start);
-            assertEquals(string.length(), token.end);
+            assertEquals(0, token.start.offset);
+            assertEquals(string.length(), token.end.offset);
             assertArrayEquals(string.toCharArray(), token.text);
         }
 
@@ -157,8 +157,8 @@ public class LexerTest {
                 Token token = new Lexer(source).next();
 
                 assertEquals(expectedType, token.type);
-                assertEquals(0, token.start);
-                assertEquals(identifier.length(), token.end);
+                assertEquals(0, token.start.offset);
+                assertEquals(identifier.length(), token.end.offset);
                 assertArrayEquals(identifier.toCharArray(), token.text); 
             });
         }

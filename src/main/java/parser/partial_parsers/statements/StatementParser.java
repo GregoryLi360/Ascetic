@@ -1,11 +1,13 @@
 package parser.partial_parsers.statements;
 
+import java.util.List;
+
+import ast.*;
+import ast.stmts.*;
 import errors.parser.UnexpectedTokenException;
 import lexer.tokens.Token;
 import lexer.tokens.TokenType;
 import parser.Parser;
-import parser.ast.*;
-import parser.ast.stmts.*;
 import parser.partial_parsers.expressions.ExpressionParser;
 import parser.partial_parsers.expressions.pratt.BindingPower;
 
@@ -29,14 +31,16 @@ public class StatementParser {
         }
     }
 
-    /**
-     * Parses comments <p>
-     * eg. {@code // hi } <p>
-     * check {@code examples.md} for more examples
-     * 
-     * @return an {@code CommentStatement} representing the comment
-     * @throws UnexpectedTokenException 
-     */
+    /** Valid top-level (program level) statements */
+    public StatementNode parseDeclarationOrComment() throws UnexpectedTokenException {
+        Token token = parser.peek();
+        switch (token.type) {
+            case COMMENT: { return parseCommentStatement(); }
+            case LET: { return parseVariableDeclaration(); }
+            default: { throw new UnexpectedTokenException(token, List.of(TokenType.COMMENT, TokenType.LET)); }
+        }
+    }
+
     public CommentStatement parseCommentStatement() throws UnexpectedTokenException {
         CommentStatement node = new CommentStatement();
         node.comment = parser.expect(TokenType.COMMENT);
@@ -44,8 +48,9 @@ public class StatementParser {
     }
 
     /**
-     * Parses an expression followed by a semicolon <p>
-     * eg. {@code 1 + 1;}
+     * Parses an expression followed by a semicolon
+     * <p>
+     * eg. {@code 1+1;}
      * 
      * @return an {@code ExpressionStatement} representing the expression statement
      * @throws UnexpectedTokenException 
@@ -59,19 +64,14 @@ public class StatementParser {
         return node;
     }
 
-    /**
-     * Parses a guard statement<p>
-     * eg. check {@code examples.md} for examples
-     * 
-     * @return an {@code GuardStatement} representing the guard statement
-     * @throws UnexpectedTokenException 
-     */
+
     public GuardStatement parseGuardStatement() throws UnexpectedTokenException {
         GuardStatement node = new GuardStatement();
         node.tokenStart = parser.getIndex();
 
         parser.expect(TokenType.GUARD);
 
+        // var clause = expressionParser.parseExpression(BindingPower.LOWEST.ordinal());
         var clause = expressionParser.parseConditional(BindingPower.LOWEST.ordinal());
         node.clause = clause;
 
@@ -82,13 +82,6 @@ public class StatementParser {
         return node;
     }
 
-    /**
-     * Parses a return statement <p>
-     * eg. {@code return x;}
-     * 
-     * @return an {@code ReturnStatement} representing the return statement
-     * @throws UnexpectedTokenException 
-     */
     public ReturnStatement parseReturnStatement() throws UnexpectedTokenException {
         ReturnStatement node = new ReturnStatement();
         node.tokenStart = parser.getIndex();
@@ -101,14 +94,6 @@ public class StatementParser {
         return node;
     }
 
-    /**
-     * Parses a return statement<p>
-     * eg. {@code let x = 0;} <p>
-     * check {@code examples.md} for more examples
-     * 
-     * @return an {@code ReturnStatement} representing the return statement
-     * @throws UnexpectedTokenException 
-     */
     public VariableDeclaration parseVariableDeclaration() throws UnexpectedTokenException {
         VariableDeclaration node = new VariableDeclaration();
         node.tokenStart = parser.getIndex();

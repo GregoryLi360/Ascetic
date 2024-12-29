@@ -2,11 +2,11 @@ package parser.partial_parsers.expressions;
 
 import java.util.List;
 
+import ast.exprs.IdentifierExpression;
 import errors.parser.UnexpectedTokenException;
 import lexer.tokens.Token;
 import lexer.tokens.TokenType;
 import parser.Parser;
-import parser.ast.exprs.IdentifierExpression;
 
 public class IdentifierMemberParser {
     private Parser parser;

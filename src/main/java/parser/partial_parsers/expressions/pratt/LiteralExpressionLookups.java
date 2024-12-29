@@ -2,8 +2,8 @@ package parser.partial_parsers.expressions.pratt;
 
 import java.util.HashMap;
 
+import ast.*;
 import lexer.tokens.TokenType;
-import parser.ast.*;
 import parser.partial_parsers.expressions.ExpressionParser;
 
 public class LiteralExpressionLookups {

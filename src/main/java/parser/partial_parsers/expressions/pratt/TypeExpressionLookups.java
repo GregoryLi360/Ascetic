@@ -2,8 +2,8 @@ package parser.partial_parsers.expressions.pratt;
 
 import java.util.HashMap;
 
+import ast.types.TypeSignature;
 import lexer.tokens.TokenType;
-import parser.ast.types.TypeSignature;
 import parser.partial_parsers.expressions.TypeAnnotationParser;
 
 public class TypeExpressionLookups {

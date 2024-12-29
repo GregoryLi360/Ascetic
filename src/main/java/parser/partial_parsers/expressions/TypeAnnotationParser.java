@@ -3,12 +3,12 @@ package parser.partial_parsers.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
+import ast.annotations.TypeAnnotation;
+import ast.types.*;
 import errors.parser.UnexpectedTokenException;
 import errors.parser.UnexpectedTokenException.ErrorRecovery;
 import lexer.tokens.Token;
 import lexer.tokens.TokenType;
-import parser.ast.annotations.TypeAnnotation;
-import parser.ast.types.*;
 import parser.partial_parsers.expressions.pratt.BindingPower;
 import parser.partial_parsers.expressions.pratt.TypeExpressionLookups;
 import parser.Parser;

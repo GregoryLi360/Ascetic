@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import ast.*;
+import ast.exprs.*;
 import errors.parser.UnexpectedTokenException;
 import errors.parser.UnexpectedTokenException.ErrorRecovery;
 import lexer.tokens.Token;
 import lexer.tokens.TokenType;
 import parser.Parser;
-import parser.ast.*;
-import parser.ast.exprs.*;
 import parser.partial_parsers.expressions.pratt.BindingPower;
 import parser.partial_parsers.expressions.pratt.LiteralExpressionLookups;
 

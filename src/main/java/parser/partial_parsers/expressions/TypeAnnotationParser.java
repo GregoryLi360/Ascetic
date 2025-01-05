@@ -107,15 +107,13 @@ public class TypeAnnotationParser {
         List<TypeSignature> paramTypes = new ArrayList<>();
         try {
             parser.expect(TokenType.OPEN_PAREN);
-            Token token = parser.expect(TokenType.CLOSED_PAREN, TokenType.PRIMITIVE_TYPE);
-            switch (token.type) {
-                case CLOSED_PAREN: { return paramTypes; }
-                case PRIMITIVE_TYPE: { paramTypes.add(parseTypeSignature(BindingPower.LOWEST.ordinal())); break; }
-                default: { throw new RuntimeException("Unreachable state, expected token types should have been exhausted."); }
+            switch (parser.peek().type) {
+                case CLOSED_PAREN: { parser.consume(); return paramTypes; }
+                default: { paramTypes.add(parseTypeSignature(BindingPower.LOWEST.ordinal())); }
             }
 
             while (true) {
-                token = parser.expect(TokenType.CLOSED_PAREN, TokenType.COMMA);
+                Token token = parser.expect(TokenType.CLOSED_PAREN, TokenType.COMMA);
                 switch (token.type) {
                     case CLOSED_PAREN: { return paramTypes; }
                     case COMMA: { paramTypes.add(parseTypeSignature(BindingPower.COMMA.ordinal())); break; }

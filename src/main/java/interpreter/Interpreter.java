@@ -3,13 +3,10 @@ package interpreter;
 import errors.analyzer.DuplicateIdentifierException;
 import errors.analyzer.UndeclaredIdentifierException;
 import interpreter.builtins.Builtin;
-import lexer.tokens.Token;
 import table.scopes.ProgramScope;
 import table.scopes.Scope;
 import table.symbols.compiled.CompiledFunctionSymbol;
 import table.symbols.compiled.CompiledSymbol;
-import table.symbols.semantic.SemanticFunctionSymbol;
-import table.symbols.semantic.SemanticSymbol;
 
 import java.util.ArrayList;
 
@@ -309,6 +306,8 @@ public class Interpreter {
         } else {
             this.currentScope = function.scope;
         }
+
+        this.currentScope = this.currentScope.addAnonymousCodeBlock();
 
         for (int i = 0; i < args.size(); i++) {
             this.currentScope.declareAndDefineValue(function.params.get(i), args.get(i));

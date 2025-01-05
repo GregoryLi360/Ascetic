@@ -143,11 +143,23 @@ Because functions are variables, they are first class!
 This means that they can be passed as parameters to other functions and returned from other functions.
 
 ```Swift
+let getAdder = (a: Int) -> {
+    return (b: Int) -> {
+        return a + b;
+    };
+};
+
+let add3 = getAdder(3);
+add3(4); // 7
+add3(5); // 8
+```
+
+```Swift
 let wrapAdder = (adder: (Int, Int) -> Int) -> (Int, Int) -> Int {
     var callCounter = 0;
     return (a, b) -> {
         callCounter += 1;
-        adder(a, b);    
+        return adder(a, b);
     };
 };
 ```
@@ -161,4 +173,25 @@ let fib = (n: Int) -> Int {
 };
 
 fib(10); // 55
+```
+
+```Swift
+let isPrime = (n: Int) -> {
+    guard n <= 1 { return false; };
+    guard n == 2 { return true; };
+
+    let isDivisible = (m: Int) -> Bool {
+        return n % m == 0;
+    };
+
+    return loop(2, n, isDivisible);
+};
+
+let loop = (start: Int, end: Int, f: (Int) -> Bool) -> {
+    guard start >= end { return true; };
+    guard f(start) { return false; };
+    return loop(start + 1, end, f);
+};
+
+isPrime(733); // true
 ```
